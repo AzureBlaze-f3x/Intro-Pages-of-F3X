@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IKB: Ignite Key Bound - Zero-Trust Identity System</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <!-- Font Awesome for Icons (No SVG tags used directly) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #000;
+            color: white;
+            height: 100vh;
+        }
+
+        /* NAVIGATION */
+        .navbar {
+            width: 100%;
+            padding: 25px 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #cfcfcf;
+            margin: 0 20px;
+            font-size: 14px;
+            transition: .3s;
+        }
+
+        nav a:hover {
+            color: white;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-btn {
+            background: #7a3ef2;
+            border: none;
+            color: white;
+            padding: 10px 22px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+
+        /* ================= HERO SECTION ================= */
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            padding: 0px 0 0 70px;
+            background: #030e1e;
+            align-items: center;
+            min-height: 90vh;
+        }
+
+        /* LEFT BLOCK */
+        .left h1 {
+            font-size: 62px;
+            line-height: 1.2;
+            font-weight: 700;
+            justify-content: center;
+        }
+
+        .highlight {
+            color: #2f4afd;
+        }
+
+        .subtext {
+            margin: 25px 0 35px;
+            color: #bbbbbb;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        .cta {
+            background: #2f4afd;
+            padding: 15px 35px;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 45px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 70px;
+            font-size: 15px;
+            opacity: .9;
+        }
+
+
+        /* RIGHT HERO WITH CARD */
+        .right {
+            position: relative;
+        }
+
+        .phoenix {
+            width: 540px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 0px;
+        }
+
+        /* NFT INFO CARD OVERLAY */
+        .card {
+            position: absolute;
+            bottom: 35px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(6px);
+            padding: 18px 22px;
+            border-radius: 10px;
+            width: 250px;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        .card h3 {
+            margin-bottom: 4px;
+        }
+
+        .card p {
+            font-size: 12px;
+            opacity: .75;
+            margin-bottom: 12px;
+        }
+
+        .buy {
+            background: #2f4afd;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .price {
+            font-size: 14px;
+            opacity: .9;
+        }
+
+        /* Custom Utilities */
+        .glass-panel {
+            background: rgba(12, 30, 61, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(0, 212, 255, 0.2), 0 0 20px rgba(0, 212, 255, 0.1);
+        }
+
+        /* CYBERPUNK CARD STYLES */
+        .cyber-card {
+            background: rgba(3, 14, 30, 0.8);
+            border: 1px solid rgba(47, 74, 253, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .cyber-card:hover {
+            border-color: rgba(47, 74, 253, 0.6);
+            box-shadow: 0 8px 30px rgba(47, 74, 253, 0.3), 0 0 40px rgba(47, 74, 253, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .cyber-card-header {
+            color: #2f4afd;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .cyber-card-title {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .cyber-card-text {
+            color: #bbbbbb;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Section Background */
+        .cyber-section {
+            background: #030e1e;
+            padding: 80px 0;
+        }
+
+        /* Glow Button */
+        .glow-btn {
+            background: #2f4afd;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(47, 74, 253, 0.4);
+        }
+
+        .glow-btn:hover {
+            box-shadow: 0 0 30px rgba(47, 74, 253, 0.7), 0 0 50px rgba(47, 74, 253, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Feature Icon */
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2f4afd 0%, #7a3ef2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(47, 74, 253, 0.5);
+        }
+
+        .feature-icon i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .step-active {
+            border-color: #00d4ff;
+            background: linear-gradient(135deg, #0c1e3d 0%, #1e3a8a 100%);
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 212, 255, 0.5), 0 0 30px rgba(0, 212, 255, 0.4);
+        }
+
+        .step-inactive {
+            border-color: #1e3a8a;
+            background-color: #0c1e3d;
+            opacity: 0.6;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+
+        .tab-active {
+            border-bottom: 2px solid #00d4ff;
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .tab-inactive {
+            border-bottom: 2px solid transparent;
+            color: #9ca3af;
+        }
+
+        .code-block {
+            font-family: 'Courier New', Courier, monospace;
+            background: linear-gradient(135deg, #0a0e1a 0%, #0c1e3d 100%);
+            color: #38bdf8;
+            border: 1px solid #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+
+        /* Transition for the flow steps */
+        .flow-box {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Phoenix glow effects */
+        .phoenix-glow {
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.6), 0 0 40px rgba(56, 189, 248, 0.3);
+        }
+
+        .phoenix-border {
+            border: 2px solid transparent;
+            background: linear-gradient(#0c1e3d, #0c1e3d) padding-box,
+                linear-gradient(135deg, #00d4ff, #38bdf8) border-box;
+        }
+
+        /* NAVBAR STYLES */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: transparent;
+            backdrop-filter: none;
+            padding: 20px 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease, background 0.3s ease, border-bottom 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(3, 14, 30, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(47, 74, 253, 0.2);
+        }
+
+        .navbar.hidden {
+            transform: translateY(-100%);
+        }
+
+        .navbar .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .navbar nav a {
+            text-decoration: none;
+            color: #cfcfcf;
+            font-size: 14px;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .navbar nav a:hover {
+            color: #2f4afd;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: #2f4afd;
+            border: none;
+            color: white;
+            padding: 10px 22px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #1e3a8a;
+            box-shadow: 0 0 20px rgba(47, 74, 253, 0.5);
+        }
+    </style>
+    <style>
+        /* RESPONSIVE STYLES */
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 20px 40px;
+            }
+
+            .hero {
+                flex-direction: column;
+                padding: 120px 20px 50px;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .left {
+                margin-bottom: 50px;
+                width: 100%;
+            }
+
+            .left h1 {
+                font-size: 48px;
+            }
+
+            .stats {
+                justify-content: center;
+                gap: 40px;
+            }
+
+            .right {
+                width: 100%;
+                display: flex;
+                justify-content: flex-end;
+                /* Align to right */
+                padding-right: 0;
+            }
+
+            .phoenix {
+                width: 80%;
+                max-width: 400px;
+                margin-right: -20px;
+                /* Pull to the edge to counteract hero padding if needed, or just align right */
+            }
+
+            .card {
+                right: 20px;
+                /* Reset from centered */
+                transform: none;
+                bottom: -20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .navbar nav {
+                display: none;
+                /* Hide desktop menu */
+            }
+
+            .nav-actions {
+                display: none;
+                /* Hide desktop button */
+            }
+
+            .mobile-menu-btn {
+                display: block !important;
+            }
+
+            .hero {
+                padding-top: 100px;
+            }
+
+            .left h1 {
+                font-size: 36px;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .phoenix {
+                width: 100%;
+            }
+
+            .card {
+                width: 90%;
+                bottom: -40px;
+            }
+
+            .cyber-section {
+                padding: 50px 0;
+            }
+
+            .cyber-card-title {
+                font-size: 32px;
+            }
+
+            .grid-cols-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .hidden.md\\:flex {
+                display: none !important;
+            }
+
+            .hidden.md\\:block {
+                display: none !important;
+            }
+        }
+
+        /* Mobile Menu Styles */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(3, 14, 30, 0.98);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+        }
+
+        .mobile-menu a {
+            color: white;
+            font-size: 24px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .mobile-menu .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Transparent Navbar -->
+    <div class="navbar" id="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-fire" style="color: #2f4afd;"></i>
+            <span>Ignite Key Bound</span>
+        </div>
+        <nav>
+            <a onclick="scrollToSection('architecture')">Architecture</a>
+            <a onclick="scrollToSection('components')">Components</a>
+            <a onclick="scrollToSection('performance')">Performance</a>
+            <a onclick="scrollToSection('comparison')">Comparison</a>
+        </nav>
+        <div class="nav-actions">
+            <button class="nav-btn" onclick="scrollToSection('comparison')">Why IKB?</button>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-btn" onclick="toggleMobileMenu()">
+            <i class="fa-solid fa-times"></i>
+        </button>
+        <a onclick="toggleMobileMenu(); scrollToSection('architecture')">Architecture</a>
+        <a onclick="toggleMobileMenu(); scrollToSection('components')">Components</a>
+        <a onclick="toggleMobileMenu(); scrollToSection('performance')">Performance</a>
+        <a onclick="toggleMobileMenu(); scrollToSection('comparison')">Comparison</a>
+        <button class="nav-btn" style="margin-top: 20px;"
+            onclick="toggleMobileMenu(); scrollToSection('comparison')">Why IKB?</button>
+    </div>
+
+    <section class="hero">
+
+        <div class="left">
+            <h1>
+                Verify <span class="highlight">Identity</span><br>
+                Authenticate <span class="highlight">Securely</span><br>
+                Move at the Speed of <span class="highlight">IKB</span>
+            </h1>
+
+            <p class="subtext">
+                IKB is a tokenless cryptographic identity layer built on asymmetric keys,<br>
+                real-time verification, and device-bound key fingerprints.<br>
+                No sessions. No tokens. No compromises.<br>
+                Just pure, verifiable trust at extreme scale.
+            </p>
+
+            <button class="cta" onclick="scrollToSection('architecture')">Explore Architecture</button>
+
+            <div class="stats">
+                <div><strong>256-bit</strong><br>Asymmetric Keys</div>
+                <div><strong>0 Tokens</strong><br>Used in Auth</div>
+                <div><strong>∞</strong><br>Scalability Horizon</div>
+            </div>
+        </div>
+
+
+        <!-- RIGHT SIDE HERO IMAGE -->
+        <div class="right">
+            <img src="F3X_Symbole.png" alt="IKB Symbol" class="phoenix">
+
+            <div class="card">
+                <h3>IKB Identity Packet</h3>
+                <p>Cryptographically signed. Device-bound. Impossible to forge.</p>
+
+                <button class="buy">Inspect</button>
+                <span class="price">Latency: &lt; 5ms</span>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Section: Executive Summary / The Why -->
+    <div class="cyber-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="cyber-card-header">The Problem & Solution</div>
+                <h2 class="cyber-card-title text-5xl">Why Move to IKB?</h2>
+                <p class="cyber-card-text max-w-3xl mx-auto mt-4">
+                    Traditional JWT and OAuth implementations rely on reusable tokens, creating a persistent attack
+                    surface. IKB closes this gap.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="cyber-card">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-shield-virus"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Zero-Trust Architecture</h3>
+                    <p class="cyber-card-text">
+                        Never trust, always verify. Every single request is cryptographically validated independently.
+                    </p>
+                </div>
+
+                <div class="cyber-card">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-fingerprint"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Device-Level Identity</h3>
+                    <p class="cyber-card-text">
+                        Uses asymmetric cryptography and envelope encryption to bind identity to the specific device.
+                    </p>
+                </div>
+
+                <div class="cyber-card">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Deep Observability</h3>
+                    <p class="cyber-card-text">
+                        Integrated W3C Trace Context headers provide full visibility into request latency and traffic
+                        routing.
+                    </p>
+                </div>
+
+                <div class="cyber-card">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-server"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">High-Throughput</h3>
+                    <p class="cyber-card-text">
+                        Designed for microservices with stateless operation across Gateway, Core, and Mesh layers.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Interactive Architecture Flow -->
+    <div id="architecture" class="cyber-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <div class="cyber-card-header">System Architecture</div>
+                <h2 class="cyber-card-title text-5xl">The Cryptographic Pipeline</h2>
+                <p class="cyber-card-text max-w-3xl mx-auto mt-4">
+                    Understand how a request travels from the client to the target service. This linear flow ensures
+                    security gates at every transition.
+                    <br><span class="text-sm font-bold" style="color: #2f4afd;">Click "Next Step" to trace the
+                        packet.</span>
+                </p>
+            </div>
+
+            <!-- Interactive Flow Component -->
+            <div class="cyber-card p-8">
+
+                <!-- Controls -->
+                <div class="flex justify-center space-x-4 mb-8">
+                    <button id="prevStepBtn"
+                        class="cyber-section border border-gray-600 text-gray-300 hover:bg-gray-800 px-4 py-2 rounded-md shadow-sm text-sm font-medium disabled:opacity-50 transition-colors">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Previous
+                    </button>
+                    <span id="stepIndicator" class="flex items-center px-4 font-mono font-bold text-cyan-400">Step
+                        1/6</span>
+                    <button id="nextStepBtn"
+                        class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-md shadow-sm text-sm font-medium transition-colors">
+                        Next <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+
+                <!-- Diagram Visualization -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative min-h-[300px]">
+
+                    <!-- Component 1: Client -->
+                    <div id="comp-client"
+                        class="flow-box p-4 rounded-lg border-2 border-gray-700 bg-gray-900 flex flex-col items-center justify-center text-center relative z-10 h-48">
+                        <i class="fa-solid fa-laptop text-4xl mb-3 text-gray-400"></i>
+                        <h4 class="font-bold text-lg">Client</h4>
+                        <div id="desc-client" class="text-xs text-gray-400 mt-2 hidden">
+                            Signs & Encrypts Request.<br>Gen Timestamp & Nonce.
+                        </div>
+                    </div>
+
+                    <!-- Arrow 1 -->
+                    <div class="hidden md:flex items-center justify-center text-gray-300">
+                        <i class="fa-solid fa-arrow-right text-2xl"></i>
+                    </div>
+
+                    <!-- Component 2: Gateway -->
+                    <div id="comp-gateway"
+                        class="flow-box p-4 rounded-lg border-2 border-gray-700 bg-gray-900 flex flex-col items-center justify-center text-center relative z-10 h-48">
+                        <i class="fa-solid fa-door-open text-4xl mb-3 text-gray-400"></i>
+                        <h4 class="font-bold text-lg">Gateway</h4>
+                        <div id="desc-gateway" class="text-xs text-gray-400 mt-2 hidden">
+                            Normalizes Request.<br>Forwards to Core.<br>Builds MeshPacket.
+                        </div>
+                    </div>
+
+                    <!-- Arrow 2 -->
+                    <div class="hidden md:flex items-center justify-center text-gray-300">
+                        <i class="fa-solid fa-arrow-right text-2xl"></i>
+                    </div>
+
+                    <!-- Component 3: Core -->
+                    <div id="comp-core"
+                        class="flow-box p-4 rounded-lg border-2 border-gray-700 bg-gray-900 flex flex-col items-center justify-center text-center relative z-10 h-48">
+                        <i class="fa-solid fa-key text-4xl mb-3 text-gray-400"></i>
+                        <h4 class="font-bold text-lg">IKB Core</h4>
+                        <div id="desc-core" class="text-xs text-gray-400 mt-2 hidden">
+                            Decrypts Envelope.<br>Verifies Signature.<br>Aggregates Roles.
+                        </div>
+                    </div>
+
+                    <!-- This row wraps on mobile, visually tricky. For simple stacked layout: -->
+                </div>
+
+                <!-- Row 2 for Mesh and Target (simulating the return trip and forward) -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative min-h-[300px] mt-4">
+                    <!-- Spacer for alignment -->
+                    <div class="hidden md:block"></div>
+                    <div class="hidden md:block"></div>
+
+                    <!-- Component 4: Mesh -->
+                    <div id="comp-mesh"
+                        class="flow-box p-4 rounded-lg border-2 border-gray-700 bg-gray-900 flex flex-col items-center justify-center text-center relative z-10 h-48">
+                        <i class="fa-solid fa-share-nodes text-4xl mb-3 text-gray-400"></i>
+                        <h4 class="font-bold text-lg">Mesh</h4>
+                        <div id="desc-mesh" class="text-xs text-gray-400 mt-2 hidden">
+                            Enforces RBAC.<br>Resolves Route.<br>Multi-level Caching.
+                        </div>
+                    </div>
+
+                    <!-- Component 5: Target -->
+                    <div id="comp-target"
+                        class="flow-box p-4 rounded-lg border-2 border-gray-700 bg-gray-900 flex flex-col items-center justify-center text-center relative z-10 h-48">
+                        <i class="fa-solid fa-bullseye text-4xl mb-3 text-gray-400"></i>
+                        <h4 class="font-bold text-lg">Target App</h4>
+                        <div id="desc-target" class="text-xs text-gray-400 mt-2 hidden">
+                            Receives clean request.<br>Executes logic.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Component Deep Dive (Tabs) -->
+    <div id="components" class="py-16 bg-[#030e1e]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-extrabold text-gray-100">Component Breakdown</h2>
+                <p class="mt-4 text-gray-400">Explore the responsibilities and data structures of the three main
+                    pillars.</p>
+            </div>
+
+            <!-- Tab Headers -->
+            <div class="flex justify-center border-b border-gray-700 mb-8">
+                <button onclick="switchTab('gateway')" id="tab-gateway"
+                    class="tab-active px-6 py-3 text-lg focus:outline-none transition-colors">
+                    IKB Gateway
+                </button>
+                <button onclick="switchTab('core')" id="tab-core"
+                    class="tab-inactive px-6 py-3 text-lg focus:outline-none transition-colors">
+                    IKB Core
+                </button>
+                <button onclick="switchTab('mesh')" id="tab-mesh"
+                    class="tab-inactive px-6 py-3 text-lg focus:outline-none transition-colors">
+                    IKB Mesh
+                </button>
+            </div>
+
+            <!-- Tab Content: Gateway -->
+            <div id="content-gateway" class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in">
+                <div class="cyber-section p-6 rounded-lg shadow-sm border border-gray-700">
+                    <h3 class="text-xl font-bold mb-4 text-gray-200">Gateway Responsibilities</h3>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span><strong>Request Normalization:</strong> Ensures protocol standards.</span>
+                        </li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span><strong>Circuit Breakers:</strong> Fault tolerance & rate limiting.</span>
+                        </li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span><strong>Route Resolution:</strong> Maps <code>/api/v1/*</code> to upstream
+                                services.</span>
+                        </li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span><strong>Distributed Tracing:</strong> Injects W3C Trace Context.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="cyber-section p-6 rounded-lg shadow-inner">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-400 text-xs uppercase font-bold">MeshPacket Structure (Generated by
+                            Gateway)</span>
+                        <div class="flex space-x-1">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                    </div>
+                    <pre class="code-block text-sm overflow-x-auto whitespace-pre-wrap">
+                            {
+                            "meta": {
+                                "method": "POST",
+                                "path": "/orders/create",
+                                "applicationId": "app_orders_01"
+                            },
+                            "roles": ["USER", "ADMIN"],
+                            "body": {
+                                "decrypted content": "..."
+                            },
+                            "headers": {
+                                "X-IKB-Verified-Uid": "u_88291",
+                                "X-IKB-Verified-Did": "d_11234",
+                                "X-IKB-Verified-Aid": "a_99881",
+                                "X-IKB-Verified-ApplicationKey": "..."
+                            }
+                            }
+                        </pre>
+                </div>
+            </div>
+
+            <!-- Tab Content: Core -->
+            <div id="content-core" class="hidden grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in">
+                <div class="cyber-section p-6 rounded-lg shadow-sm border border-gray-700">
+                    <h3 class="text-xl font-bold mb-4 text-gray-200">Core Engine Responsibilities</h3>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span><strong>Envelope Decryption:</strong> Unlocks device secrets/session keys.</span>
+                        </li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span><strong>Signature Verification:</strong> ECDSA or HMAC-SHA256 checks.</span>
+                        </li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span><strong>Replay Protection:</strong> Nonce + Timestamp (±5 min window).</span>
+                        </li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span><strong>Role Aggregation:</strong> Computes roles from device/account policies.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="cyber-section p-6 rounded-lg shadow-inner">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-400 text-xs uppercase font-bold">Verification Output (/ikb/verify)</span>
+                        <div class="flex space-x-1">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                    </div>
+                    <pre class="code-block text-sm overflow-x-auto whitespace-pre-wrap">
+{
+  "uid": "u_88291",
+  "did": "d_11234",
+  "aid": "a_99881",
+  "roles": ["USER"],
+  "applicationKey": "key_v2_...",
+  "body": {
+    "decrypted payload": "..."
+  }
+}
+</pre>
+                </div>
+            </div>
+
+            <!-- Tab Content: Mesh -->
+            <div id="content-mesh" class="hidden grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in">
+                <div class="cyber-section p-6 rounded-lg shadow-sm border border-gray-700">
+                    <h3 class="text-xl font-bold mb-4 text-gray-200">Mesh & Routing Responsibilities</h3>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span><strong>RBAC Enforcement:</strong> Validates <code>mesh-policies.yml</code>.</span>
+                        </li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span><strong>Security Checks:</strong> Validates Gateway HMAC & Timestamps.</span>
+                        </li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span><strong>Multi-Level Caching:</strong> L1 (Caffeine) & L2 (Redis).</span>
+                        </li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span><strong>Secure Forwarding:</strong> WebClient POST to internal service.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="cyber-section p-6 rounded-lg shadow-sm border border-gray-700">
+                    <h3 class="text-xl font-bold mb-4 text-gray-200">Caching Strategy</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
+                            <span class="font-medium">L1 Cache (Caffeine)</span>
+                            <span class="text-green-600 font-bold">&lt;1ms latency</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
+                            <span class="font-medium">L2 Cache (Redis)</span>
+                            <span class="text-cyan-400 font-bold">1–3ms latency</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
+                            <span class="font-medium">DB Fallback</span>
+                            <span class="text-orange-600 font-bold">10–20ms latency</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Section: Gateway Endpoints (NEW from MD files) -->
+    <div class="cyber-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold text-gray-100 mb-8">Gateway Public Endpoints</h2>
+            <p class="text-gray-400 mb-6">The IKB Gateway exposes these public API endpoints mapped to IKB Core:</p>
+
+            <div class="overflow-x-auto shadow ring-1 ring-cyan-400 ring-opacity-20 md:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-700">
+                    <thead class="cyber-card">
+                        <tr>
+                            <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-cyan-400 sm:pl-6">Method
+                            </th>
+                            <th class="px-3 py-3.5 text-left text-sm font-semibold text-cyan-400">Endpoint</th>
+                            <th class="px-3 py-3.5 text-left text-sm font-semibold text-cyan-400">Target (Core)</th>
+                            <th class="px-3 py-3.5 text-left text-sm font-semibold text-cyan-400">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700 bg-gray-900">
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-200 sm:pl-6">POST
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/api/v1/app/register</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/ikb/register-application</td>
+                            <td class="px-3 py-4 text-sm text-gray-400">Register a new application</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-200 sm:pl-6">POST
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/api/v1/device/register</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/ikb/register-device</td>
+                            <td class="px-3 py-4 text-sm text-gray-400">Register a new device</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-200 sm:pl-6">POST
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/api/v1/verify</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/ikb/verify</td>
+                            <td class="px-3 py-4 text-sm text-gray-400">Verify an identity request</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-200 sm:pl-6">POST
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/api/v1/profile</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/ikb/profile</td>
+                            <td class="px-3 py-4 text-sm text-gray-400">Fetch user profile</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-200 sm:pl-6">POST
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/api/v1/logout</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/ikb/logout</td>
+                            <td class="px-3 py-4 text-sm text-gray-400">Logout user/device</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-200 sm:pl-6">POST
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/api/v1/keys/generate</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/ikb/crypto/generate</td>
+                            <td class="px-3 py-4 text-sm text-gray-400">Generate crypto keys</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800 transition-colors">
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-200 sm:pl-6">GET
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/api/v1/keys/public</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">/ikb/crypto/public</td>
+                            <td class="px-3 py-4 text-sm text-gray-400">Retrieve public keys</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Performance Lab -->
+    <div id="performance" class="cyber-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <h2 class="text-3xl font-extrabold text-gray-100">Performance Lab</h2>
+                <p class="mt-4 text-gray-400">IKB is engineered for speed. Explore the timing metrics and complexity
+                    analysis below.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Chart 1: Verification Timing -->
+                <div>
+                    <h3 class="text-lg font-bold text-blue-200 mb-4">Core Verification Timing (ms)</h3>
+                    <p class="text-sm text-gray-400 mb-4">Breakdown of the 24-50ms verification window.</p>
+                    <div class="chart-container bg-gray-900 p-2 rounded-lg border border-gray-100 shadow-sm">
+                        <canvas id="timingChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-400 italic text-center">
+                        Total Core Verification: <strong>24–50ms</strong>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Complexity Analysis -->
+                <div>
+                    <h3 class="text-lg font-bold text-blue-200 mb-4">Time Complexity Analysis</h3>
+                    <p class="text-sm text-gray-400 mb-4">Theoretical scaling of IKB Core vs. Linear Growth.</p>
+                    <div
+                        class="chart-container bg-gray-900 p-2 rounded-lg border border-gray-100 shadow-sm flex items-center justify-center">
+                        <div id="complexityChart" style="width:100%; height:100%;"></div>
+                    </div>
+                    <div class="mt-4 grid grid-cols-3 gap-2 text-center text-xs text-gray-400">
+                        <div class="cyber-card p-2 rounded">
+                            <strong>Gateway</strong><br>O(1)
+                        </div>
+                        <div class="cyber-card p-2 rounded">
+                            <strong>Mesh</strong><br>O(n + r)
+                        </div>
+                        <div class="bg-blue-100 p-2 rounded">
+                            <strong>Core</strong><br>O(n + log m)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Comparison (IKB vs JWT) -->
+    <div id="comparison" class="py-16 bg-[#030e1e]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold text-gray-100 mb-8 text-center">The Showdown: IKB vs. JWT</h2>
+
+            <div class="overflow-x-auto shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-300">
+                    <thead class="cyber-card text-white">
+                        <tr>
+                            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:pl-6">Feature
+                            </th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-300">JWT
+                                (Traditional)</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-blue-400">IKB
+                                (Zero-Trust)</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">Advantage</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-gray-900" id="comparison-body">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-4 text-center text-gray-400 font-medium">Conclusion: IKB provides a superior foundation for
+                Zero-Trust Architectures.</p>
+        </div>
+    </div>
+
+    <!-- Section: IKB Benefits (NEW from MD files) -->
+    <div class="cyber-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold text-gray-100 mb-12 text-center">Benefits of IKB System</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div
+                    class="cyber-card p-6 rounded-lg border border-cyan-400 border-opacity-30 hover:border-opacity-60 transition-all">
+                    <div class="flex items-center mb-4">
+                        <i class="fa-solid fa-shield-halved text-3xl text-cyan-400 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-100">Zero Token Theft</h3>
+                    </div>
+                    <p class="text-gray-400">There is no token to steal. Identity is cryptographically proven on every
+                        request.</p>
+                </div>
+
+                <div
+                    class="cyber-card p-6 rounded-lg border border-purple-500 border-opacity-30 hover:border-opacity-60 transition-all">
+                    <div class="flex items-center mb-4">
+                        <i class="fa-solid fa-ban text-3xl text-purple-400 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-100">Impossible to Forge Identity</h3>
+                    </div>
+                    <p class="text-gray-400">No attacker can generate a valid signature without the device's private
+                        key.</p>
+                </div>
+
+                <div
+                    class="cyber-card p-6 rounded-lg border border-teal-500 border-opacity-30 hover:border-opacity-60 transition-all">
+                    <div class="flex items-center mb-4">
+                        <i class="fa-solid fa-lock text-3xl text-teal-400 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-100">Payload Always Encrypted</h3>
+                    </div>
+                    <p class="text-gray-400">Only IKB Core can decrypt request payloads. End-to-end encryption
+                        guaranteed.</p>
+                </div>
+
+                <div
+                    class="cyber-card p-6 rounded-lg border border-cyan-400 border-opacity-30 hover:border-opacity-60 transition-all">
+                    <div class="flex items-center mb-4">
+                        <i class="fa-solid fa-rotate text-3xl text-cyan-400 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-100">Every Request Is Fresh</h3>
+                    </div>
+                    <p class="text-gray-400">No replay attacks. No "copy-paste token". Every request is
+                        cryptographically unique.</p>
+                </div>
+
+                <div
+                    class="cyber-card p-6 rounded-lg border border-purple-500 border-opacity-30 hover:border-opacity-60 transition-all">
+                    <div class="flex items-center mb-4">
+                        <i class="fa-solid fa-user-shield text-3xl text-purple-400 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-100">RBAC at Mesh Layer</h3>
+                    </div>
+                    <p class="text-gray-400">Applications don't need to deal with roles or permissions. Mesh handles it
+                        all.</p>
+                </div>
+
+                <div
+                    class="cyber-card p-6 rounded-lg border border-teal-500 border-opacity-30 hover:border-opacity-60 transition-all">
+                    <div class="flex items-center mb-4">
+                        <i class="fa-solid fa-layer-group text-3xl text-teal-400 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-100">Multi-layered Trust</h3>
+                    </div>
+                    <p class="text-gray-400">Even if one component is compromised, the system holds. Defense in depth.
+                    </p>
+                </div>
+
+                <div
+                    class="cyber-card p-6 rounded-lg border border-cyan-400 border-opacity-30 hover:border-opacity-60 transition-all">
+                    <div class="flex items-center mb-4">
+                        <i class="fa-solid fa-arrows-split-up-and-left text-3xl text-cyan-400 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-100">Horizontal Scalability</h3>
+                    </div>
+                    <p class="text-gray-400">All services are stateless, cache-backed, and fault-tolerant.</p>
+                </div>
+
+                <div
+                    class="cyber-card p-6 rounded-lg border border-purple-500 border-opacity-30 hover:border-opacity-60 transition-all">
+                    <div class="flex items-center mb-4">
+                        <i class="fa-solid fa-chart-line text-3xl text-purple-400 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-100">Full End-to-End Observability</h3>
+                    </div>
+                    <p class="text-gray-400">Tracing across Gateway → Core → Mesh → Application with W3C standards.</p>
+                </div>
+
+                <div
+                    class="cyber-card p-6 rounded-lg border border-teal-500 border-opacity-30 hover:border-opacity-60 transition-all">
+                    <div class="flex items-center mb-4">
+                        <i class="fa-solid fa-microchip text-3xl text-teal-400 mr-3"></i>
+                        <h3 class="text-xl font-bold text-gray-100">Device-Level Identity</h3>
+                    </div>
+                    <p class="text-gray-400">3 users × 3 devices = 9 cryptographic identities. JWT cannot do this.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="cyber-section text-white py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400">&copy; 2025 Ignite Key Bound. All rights reserved.</p>
+            <p class="text-sm text-gray-500 mt-2">Zero-Trust Identity System - Technical Documentation v2.0</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // State Management
+        const state = {
+            currentStep: 0,
+            totalSteps: 6,
+            currentTab: 'gateway'
+        };
+
+        // --- 1. Architecture Flow Logic ---
+        const steps = [
+            { comp: 'comp-client', title: 'Step 1: Client', desc: 'Client signs & encrypts the request. Generates timestamp & nonce. NO reusable token used.', arrow: null },
+            { comp: 'comp-gateway', title: 'Step 2: Gateway', desc: 'Gateway receives encrypted payload. Enforces rate limits. Forwards to Core for verification.', arrow: 'comp-client' },
+            { comp: 'comp-core', title: 'Step 3: Core (Verify)', desc: 'Core decrypts envelope/identity/body. Verifies signature & nonce. Aggregates roles.', arrow: 'comp-gateway' },
+            { comp: 'comp-gateway', title: 'Step 4: Core → Gateway', desc: 'Core returns verified identity context (UID, DID, Roles, Decrypted Body) back to Gateway.', arrow: 'comp-core' },
+            { comp: 'comp-mesh', title: 'Step 5: Gateway → Mesh', desc: 'Gateway constructs MeshPacket with verified headers, signs with HMAC, and forwards to Mesh.', arrow: 'comp-gateway' },
+            { comp: 'comp-target', title: 'Step 6: Mesh → Target', desc: 'Mesh validates packet, checks RBAC policies, and forwards verified request to Target Application.', arrow: 'comp-mesh' }
+        ];
+
+        const nextBtn = document.getElementById('nextStepBtn');
+        const prevBtn = document.getElementById('prevStepBtn');
+        const narrative = document.getElementById('flow-narrative');
+        const stepIndicator = document.getElementById('stepIndicator');
+
+        function updateArchitectureVisuals() {
+            // Reset all boxes
+            document.querySelectorAll('.flow-box').forEach(el => {
+                el.classList.remove('step-active');
+                el.classList.add('step-inactive');
+                el.querySelector('div[id^="desc-"]').classList.add('hidden');
+            });
+
+            // Logic to highlight current path
+            const currentData = steps[state.currentStep - 1]; // 0-indexed array vs 1-based step
+
+            if (state.currentStep > 0 && currentData) {
+                const activeEl = document.getElementById(currentData.comp);
+                if (activeEl) {
+                    activeEl.classList.remove('step-inactive');
+                    activeEl.classList.add('step-active');
+                    activeEl.querySelector('div[id^="desc-"]').classList.remove('hidden');
+                    narrative.innerHTML = `<span class="font-bold text-cyan-400">${currentData.title}:</span> ${currentData.desc}`;
+                }
+            } else {
+                narrative.innerHTML = "Ready to start. Click 'Next' to initiate a request.";
+            }
+
+            stepIndicator.textContent = `Step ${state.currentStep}/6`;
+
+            // Button States
+            prevBtn.disabled = state.currentStep === 0;
+            nextBtn.disabled = state.currentStep === 6;
+            if (state.currentStep === 6) {
+                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (state.currentStep < 6) {
+                state.currentStep++;
+                updateArchitectureVisuals();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (state.currentStep > 0) {
+                state.currentStep--;
+                updateArchitectureVisuals();
+            }
+        });
+
+        // --- 2. Tab Logic ---
+        function switchTab(tabName) {
+            // Headers
+            ['gateway', 'core', 'mesh'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tabName) {
+                    btn.classList.remove('tab-inactive');
+                    btn.classList.add('tab-active');
+                } else {
+                    btn.classList.add('tab-inactive');
+                    btn.classList.remove('tab-active');
+                }
+            });
+
+            // Content
+            ['gateway', 'core', 'mesh'].forEach(t => {
+                const content = document.getElementById(`content-${t}`);
+                if (t === tabName) {
+                    content.classList.remove('hidden');
+                    content.classList.add('grid');
+                } else {
+                    content.classList.add('hidden');
+                    content.classList.remove('grid');
+                }
+            });
+        }
+
+        // --- 3. Charts Logic ---
+        function initCharts() {
+            // Chart.js: Verification Timing
+            const ctxTiming = document.getElementById('timingChart').getContext('2d');
+            new Chart(ctxTiming, {
+                type: 'bar',
+                data: {
+                    labels: ['Envelope Decrypt', 'Identity Decrypt', 'Body Decrypt', 'Sig Verify', 'Timestamp/Nonce', 'Role Aggregation'],
+                    datasets: [{
+                        label: 'Processing Time (ms)',
+                        data: [7.5, 7.5, 20, 3.5, 0.5, 1.5], // Averages from ranges
+                        backgroundColor: [
+                            'rgba(249, 115, 22, 0.6)', // Orange
+                            'rgba(249, 115, 22, 0.6)',
+                            'rgba(249, 115, 22, 0.8)', // Darker Orange for heavy lift
+                            'rgba(59, 130, 246, 0.6)', // Blue
+                            'rgba(59, 130, 246, 0.6)',
+                            'rgba(20, 184, 166, 0.6)'  // Teal
+                        ],
+                        borderColor: [
+                            'rgba(249, 115, 22, 1)',
+                            'rgba(249, 115, 22, 1)',
+                            'rgba(249, 115, 22, 1)',
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(20, 184, 166, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', // Horizontal bar
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Milliseconds (ms)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `${context.raw} ms (Avg)`
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Plotly.js: Complexity Analysis
+            // Simulating n data points
+            const n = Array.from({ length: 20 }, (_, i) => i + 1);
+
+            // O(1) - Gateway
+            const yGateway = n.map(() => 1);
+
+            // O(n + log m) - Core (Simulated where m is constant 100)
+            const yCore = n.map(val => val + Math.log(100));
+
+            // O(n + r) - Mesh (Simulated where r is constant 10)
+            const yMesh = n.map(val => val + 10);
+
+            const traceCore = {
+                x: n, y: yCore,
+                mode: 'lines+markers',
+                name: 'Core O(n + log m)',
+                line: { color: '#3b82f6', width: 3 }
+            };
+
+            const traceMesh = {
+                x: n, y: yMesh,
+                mode: 'lines',
+                name: 'Mesh O(n + r)',
+                line: { color: '#14b8a6', dash: 'dot' }
+            };
+
+            const traceGateway = {
+                x: n, y: yGateway,
+                mode: 'lines',
+                name: 'Gateway O(1)',
+                line: { color: '#6b7280' }
+            };
+
+            const layout = {
+                title: { text: 'Performance Scaling vs Payload Size (n)', font: { size: 14 } },
+                xaxis: { title: 'Payload Size (n)' },
+                yaxis: { title: 'Relative Operations' },
+                margin: { t: 40, r: 10, l: 40, b: 40 },
+                showlegend: true,
+                legend: { x: 0.05, y: 1 },
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)'
+            };
+
+            Plotly.newPlot('complexityChart', [traceCore, traceMesh, traceGateway], layout, { responsive: true, displayModeBar: false });
+        }
+
+        // --- 4. Comparison Table Population ---
+        const comparisonData = [
+            { feat: "Token Reuse", jwt: "Always possible", ikb: "None", adv: "IKB" },
+            { feat: "Replay Protection", jwt: "Weak", ikb: "Strong (Nonce+Time)", adv: "IKB" },
+            { feat: "Encryption", jwt: "Optional (JWE)", ikb: "Mandatory", adv: "IKB" },
+            { feat: "Signature", jwt: "Static", ikb: "Dynamic (Per-Request)", adv: "IKB" },
+            { feat: "Device Identity", jwt: "No", ikb: "Yes", adv: "IKB" },
+            { feat: "Token Theft Risk", jwt: "High", ikb: "Zero", adv: "IKB" }
+        ];
+
+        function renderComparison() {
+            const tbody = document.getElementById('comparison-body');
+            tbody.innerHTML = comparisonData.map((row, index) => `
+                <tr class="${index % 2 === 0 ? 'bg-gray-900' : 'bg-gray-800'} hover:bg-blue-50 transition-colors cursor-default">
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-100 sm:pl-6">${row.feat}</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-400">${row.jwt}</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-blue-700 font-bold">${row.ikb}</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-400">
+                        ${row.adv === 'IKB' ? '<i class="fa-solid fa-trophy text-yellow-500"></i>' : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            renderComparison();
+            updateArchitectureVisuals(); // Set initial state
+        });
+
+        // Navigation Smooth Scroll
+        window.scrollToSection = (id) => {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Navbar Hide/Show on Scroll
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', function () {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // Toggle 'scrolled' class based on position
+            if (scrollTop > 10) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down - hide navbar
+                navbar.classList.add('hidden');
+            } else {
+                // Scrolling up - show navbar
+                navbar.classList.remove('hidden');
+            }
+
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        }, false);
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+
+            // Prevent scrolling when menu is open
+            if (menu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+    </script>
+</body>
+
+</html>
